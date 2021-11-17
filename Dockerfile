@@ -4,14 +4,14 @@ RUN apk --update add git openssh && \
     rm -rf /var/lib/apt/lists/* && \
     rm /var/cache/apk/*
 
-WORKDIR /src/app/
+ENV APP_DIR /src/app/
 
-ADD ./package.json .
+RUN mkdir -p $APP_DIR
+
+ADD ./package.json ${APP_DIR}
+
+WORKDIR $APP_DIR
 
 RUN ["npm", "install"]
 
 COPY . .
-
-RUN chown -R node:node /src/app
-
-USER node
